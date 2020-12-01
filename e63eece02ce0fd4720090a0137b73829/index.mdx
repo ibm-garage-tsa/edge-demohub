@@ -1,0 +1,396 @@
+---
+title: Lab 1 - Multicluster Management
+description:
+---
+
+<FeatureCard
+  title="Multicluster Management with IBM Cloud Pak for Multicloud Management"
+  color="dark"
+  >
+
+![banner](/images/clustermgmt-banner.jpg)
+
+</FeatureCard>
+
+
+<AnchorLinks>
+  <AnchorLink>Lab Overview</AnchorLink>
+  <AnchorLink>Prerequisite</AnchorLink>
+  <AnchorLink>Business Context</AnchorLink>
+  <AnchorLink>Add Managed Clusters</AnchorLink>
+  <AnchorLink>Overview of the managed environments</AnchorLink>
+  <AnchorLink>Deploy an Application</AnchorLink>
+  <AnchorLink>Manage Cluster Objects</AnchorLink>
+  <AnchorLink>Summary</AnchorLink>
+</AnchorLinks>
+
+***
+
+## Lab Overview
+
+IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
+
+IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
+
+In this tutorial, you will explore the following key capabilities:
+-	`Understand Cloud Pak for Multicloud Management`
+-	`Learn how to add a managed cluster`
+- `learn how to gather monitoring metrics from the managed cluster`
+-	`Learn how to deploy an application to the managed cluster`
+
+***
+
+## Prerequisite
+
+- You need to provision your own copy of the CP4MCM 2.0 environment, start it and verify for correct startup (check [here](../../gettingstarted/)).
+
+***
+
+## Business Context
+
+As a member of the Cloud Operation team, you are having problems to manage your multicloud hybrid world. Operate your cloud-based services and data across multiple providers is overwhelming your team.
+Your company is deploying multiple Kubernetes clusters to address their specific needs. Some Dev teams are deploying clusters across public and private clouds, and some are deploying clusters across regions, and some are deploying clusters to support the development and test needs.
+
+As different teams deploy more clusters, new challenges are introduced:
+-	Where are my services running?
+-	How can I monitor applications across clusters and clouds?
+-	How can I manage clusters as if they were one environment?
+-	Where are the failed components?
+-	How do I deploy applications across these environments?
+-	How do I move workloads across environments?
+-	How do I set consistent security policies across environments?
+-	Which clusters are compliant?
+-	How can I place workloads based on capacity, policy?
+
+Because of that, you want to explore how IBM Cloud Pak for Multicloud Management, provides consistent visibility, governance and automation of your complex environment.
+
+In this tutorial, you use a Red Hat OpenShift cluster with Cloud Pak for MCM as a **Management Hub** and a second single-node cluster running MicroK8s as a **managed cluster**
+-	Hub cluster includes management console, federated monitoring, and all the controllers. 
+-	Managed cluster includes klusterlet components that communicate status back to the Hub cluster. 
+
+The relationship between hub and managed clusters is shown in the diagram below:
+
+![](images/1-cluster-mgmt-img.png)
+
+In this tutorial, you will log in to the Hub cluster to do cluster management.
+
+You will complete the following tasks:
+-	Add a managed cluster
+-	Visualize cluster topology
+-	Visualize clusters and launch to each cluster
+- Deploy remote cluster cloud native monitoring
+-	Deploy an application to remote cluster
+-	Manage cluster objects
+
+***
+
+## Add Managed Clusters
+
+In this section, you will add two new managed clusters in your Control Panel. As explained before, you will add your OpenShift Hub cluster and your Microk8s managed cluster.
+
+1. To start the lab, you should be in your Cloud Pak for Multicloud Management Web Console. If you are not, check [here](../gettingstarted/) how to open your console page.
+
+  ![](images/2-cluster-mgmt-img.png)
+
+2. Now, let's explore the Cluster view. Click the hamburger **Menu** (1) and select **Automated Infrastructure -> Clusters** (2).
+
+  ![](images/2020-09-17-19-58-15.png)
+
+3. Initially, you shouldn't have any cluster registered here. Let's add our first cluster. Click **Add cluster**.
+
+  ![](images/2020-09-17-19-59-07.png)
+
+4. You can add a cluster by Importing an existing cluster or provisioning a new cluster using a Service Library. We use the first option. Select **Import an Existing cluster** (1) and click **Import** (2).
+
+  ![](images/2020-09-17-20-00-49.png)
+
+5. Enter **hub-cluster** for cluster name (1) and **hub-cluster** for namespace (2). You can view the yaml file and change the settings as needed (3). To import an OpenShift cluster no further changes are needed. Click **Generate command** to continue (4).
+
+  ![](images/6-cluster-mgmt-img.png)
+
+6. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1) and click **View cluster** (2) to see the new hub-cluster details page. 
+
+  ![](images/7-cluster-mgmt-img.png)
+
+7. Open the terminal window clicking the **Terminal** link on the desktop. The **Management Hub** windows has a green background.
+
+  ![](images/2020-09-17-20-01-43.png)
+
+  To set the the context to use your Hub cluster (login to the cluster), run the command below:
+
+  ```
+  ./oclogin.sh
+  ```
+
+  ![](images/2020-09-17-20-02-48.png)
+
+8. Let's test the new context configuration. Run the command below to get the cluster nodes.
+
+  ```
+  oc get nodes
+  ```
+
+  ![](images/2020-09-17-20-04-17.png)
+
+  Great, you are accessing the Hub cluster. Now you are ready to execute the generated command.
+
+9. **Paste** the generated command that you previously copied in the clipboard.  When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
+
+  ![](images/2020-09-17-20-05-03.png)
+
+  In case you will see the error like shown below, run the command again. 
+
+  ![](images/2020-09-17-20-06-15.png)
+
+  This error is a result of performance limitations of the Skytap environment - the final result should look like below:
+
+  ![](images/2020-09-17-20-07-48.png)
+
+10. You can view the progress by entering the command:
+
+  ```
+  oc get pods -n multicluster-endpoint
+  ```
+
+  Make sure all the pods are in the running state.
+
+  ![](images/2020-09-17-20-09-29.png)
+
+11. The cluster endpoint (klusterlet) is ready when all the Pods are in Running state. Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page). On the page navigation breadcrumb, click on **Clusters** link.
+
+  ![](images/2020-09-17-20-16-12.png)
+
+12. Now you can see your hub-cluster on the clusters list. You can add labels to identify your new cluster. On the hub-cluster row, click on the three dots icon (1) and select **Edit labels** (2).
+
+  ![](images/2020-09-17-20-19-23.png)
+
+13. Add a new label, **environment** (1), and give a value **Dev** (2). Click **+** (3) and **save** (4) the changes.
+
+  ![](images/2020-09-17-20-22-16.png)
+
+  Great, your first cluster is ready! Now let's add your MicroK8s managed cluster.
+
+14. Click **Add cluster** again.
+
+  ![](images/14-cluster-mgmt-img.png)
+
+15. Select again **Import an Existing cluster** (1) and click **Import** (2).
+
+  ![](images/2020-09-17-20-00-49.png)
+
+16. Enter **microk8s** for cluster name (1) and **microk8s** for namespace (2). Click **Generate command** to continue (3).
+
+  ![](images/2020-09-17-20-26-25.png)
+
+17. A curl command is generated that you will use to add the new cluster. Click **Copy command** button (1). 
+
+  ![](images/7-cluster-mgmt-img.png)
+
+18. Go back to the desktop and open the terminal window to MicroK8s cluster clicking the **MicroK8s Terminal** link. 
+
+![](images/2020-09-17-20-30-28.png)
+
+19. MicroK8s terminal has a yellow background. To verify the cluster status run the following command in the **MicroK8s** window
+
+  ```
+  kubectl get nodes
+  ```
+
+  ![](images/2020-09-17-20-32-22.png)
+
+  Great, you are accessing the managed cluster. Now you are ready to execute the generated command.
+
+20. **Paste** the generated command that you previously copied in the clipboard. When you run the command, several Kubernetes objects are created in the multicluster-endpoint namespace.
+
+  ![](images/2020-09-17-20-33-29.png)
+
+  If you see the error as before - just run the command again.
+
+21. You can view the progress by entering the command:
+
+  ```
+  kubectl get pods -n multicluster-endpoint
+  ```
+
+  Make sure all the pods are in the running state.
+
+  ![](images/2020-09-17-20-35-48.png)
+
+22. Back to the browser window, click **View cluster** and make sure that the cluster status is **Ready** now (if necessary, refresh the details page).
+
+  ![](images/2020-09-17-20-37-12.png)
+
+  ![](images/2020-09-17-20-38-01.png)
+
+23. On the page navigation breadcrumb, click on **Clusters** link
+
+  ![](images/2020-09-17-20-39-09.png)
+
+24. Now you can see your both clusters in a clusters list. You should add labels to identify your new cluster. Follow the same procedure as in steps 12-13 above to add a label **environment** = **QA** to the microK8s cluster
+
+  Great, your both clusters are ready and managed by IBM Cloud Pak for Multicloud Management. Using this Pak, you are able to manage both cluster from a single pane of glass. Let's check it in the next section.
+
+***
+
+## Overview of the managed environments
+
+In this section, you visualize key information about your managed environments in a Cloud Pak for Multicloud Management dashboard.
+
+1. With IBM Cloud Pak for Multicloud Management you are able to manage all your environments from a single control panel. Open the **Menu** button (1) and click **Observe environments** (2) > **Overview** (3).
+
+  ![](images/22-cluster-mgmt-img.png)
+
+2. The Overview menu option displays the status of all clusters including the health and resource metrics. The top section shows the operations details across all your cloud providers. In the first section, you can see information about cloud providers, compute resources, applications and infrastructure. Because your both clusters are completely new, you don't have a lot of information here. But in a real production environment here is your starting point to explore your multiple clusters.
+
+  ![](images/2020-09-17-20-55-29.png)
+
+3. Scroll down to the bottom section showing Resource Overview. Here you can see Cluster Compliance status, Cluster status, CPU, Memory, and Storage Resource View.
+
+  ![](images/2020-09-17-20-56-29.png)
+
+4. Now, navigate to the **Applications** page. Select "hamburger" menu in the top-left corner and then (1) **Manage applications** and (2) **Hybrid applications**.
+
+   ![](images/2020-09-17-21-11-52.png)
+
+   By now, you don't have any application here. But it is important to know, that in this area, you will see information about the deployment of an application. Don’t worry about it now, you will explore it later.
+
+5. Now, let’s explore a really good feature of Cloud Pak for Multicloud Management: Visual Web Terminal. On the top right navigator, click on **Visual Web Terminal** button.
+
+  ![](images/2020-09-17-21-13-10.png)
+
+6. You can use the Visual Web Terminal to run many commands across your environment. When categorized data is returned, such as when you enter a search command, it is returned in an interactive tabular format.
+
+  The Visual Web Terminal is particularly useful when troubleshooting issues that require running multiple commands and navigating the results of the commands in an easy way. Let’s try something simple! Enter the command bellow:
+
+   ```
+   oc project multicluster-endpoint
+   ```
+
+   ```
+   oc get pods
+   ```
+
+  ![](images/2020-09-17-21-33-24.png)
+
+  The information that is provided in the Visual Web Terminal is limited by the permissions of the user. When you run a command, only the items that you have permission to view are displayed. You can click on any row in the displayed table (3) and then explore the details of the specific resource - for example Events (4)
+
+  Next section, you learn how to deploy an application to the local or remote cluster.
+
+***
+
+## Deploy an Application
+
+In this step, you install a helm chart from the catalog to your hub-cluster and your managed-roks cluster. Let's do it!
+
+1. Open the **Menu** (1) and click on **Administer** (2) > **Helm repository** (3).
+
+TO BE REPLACED!!!
+
+2. On the Helm Repositories page, click **Add Repository** to register a new Helm Repository.
+
+  ![add repository](images/2020-09-18-16-00-28.png)
+
+3. Enter **dte-charts** (1) as repository Name, and enter **https://raw.githubusercontent.com/dymaczew/charts/master/repo/incubator** as URL (2). Click **Add** (3).
+
+  ![repo add dialog](images/2020-09-18-16-02-55.png)
+
+4. After few seconds, you should see Sync Status as **Completed** (1). Now, let’s deploy an application from this new Helm repository. Click **Catalog** (2) on upper right corner of the page to view the list of helm charts that you can deploy.
+
+  ![helm repo added](images/2020-09-18-16-05-20.png)
+
+5. Search for **mod** (1) and select **modresortapp** (2) application.
+
+  ![modresortapp](images/2020-09-18-16-07-07.png)
+
+6. The chart deploys a simple Liberty web application for demonstration purposes. Select **Configure** to continue.
+
+  ![configure](images/2020-09-18-16-08-32.png)
+
+7. Enter **demo** as Helm release name (1), select **default** as Target namespace (2). On Target cluster, select the **local-cluster** (3). Then click **Install** (4).
+
+  ![install](images/2020-09-18-16-12-42.png)
+
+8. The installation starts immediately but it takes a few minutes to deploy the application to remote cluster. Click **View Helm Releases** to view the status.
+
+  ![](images/2020-09-18-16-14-00.png)
+
+9. On the Helm releases page, you can check that **demo** helm is deployed to your Hub cluster.
+
+  ![](images/2020-09-18-16-15-10.png)
+
+10. Now, go back to the **Hybrid applications** menu ("hamburger" -> Manage Applications -> Hybrid Applications). You can notice that now it shows your just deployed application. Click the **demo-modresrtapp** application.
+
+  NOTE: If the Hybrid Applicatiuons view is not showing the app it may be related to the bug in a code. Go to the Overview page ("hamburger" -> Observe environments -> Overview) and scroll down. In the Applications section you should see a **demo-moderesortapp**. Click the link and continue.
+
+  ![](images/2020-09-18-16-27-52.png)
+
+11. You should see the details of the sample application, as shown below. Click on any of the icons to see the details of each object. 
+
+  ![](images/2020-09-18-16-38-53.png)
+
+12. Click the **demo-modresortapp** placement rule (1) and notice that it defines the placement of the application to the clusters with label **environment=Dev** (2). It also specify that one instance of the application should be deployed in case more clusters is labeled this way.
+    
+  ![](images/2020-09-18-16-43-05.png)
+
+13. Let's modify the target cluster. Edit the label in the yaml file on the right (1) changing the **Dev** to **QA** and apply the changes with the **Update** icon (2)
+
+  ![](images/2020-09-18-20-22-10.png)
+
+14. In a short time you should notice that the placement rule change is picked by the system and the different target cluster is designeted as a target for deployment.
+
+  ![](images/2020-09-18-20-25-11.png)
+
+15. Let's verify that the application is actually running on MicroK8s cluster. Go back to the yellow **MicroK8s** terminal windows and run the following commands:
+
+  ```sh
+  oc get pods -n default
+  oc get service -n default
+  ```
+
+  ![](images/2020-09-18-20-27-03.png)
+
+16. Notice the **Node port** used by the service. In the example screenshot it is `31946`
+
+  ![](images/2020-09-18-20-28-29.png)
+
+17. Go back to your browser window, open a new tab and provide the following URL `http://microk8s.demo.ibmdte.net:[port-number-from-previous-step]/resorts`
+    
+  ![](images/2020-09-18-20-31-41.png)
+
+18. Great! Your Liberty application is available on your managed cluster. 
+
+  This application is really a simple sample, just to show you how easy is to install an application from the catalog in multiple clusters. In our next lab you will deploy a hybrid application learning details about Application Management deployment using channels and subscriptions concepts.
+
+***
+
+## Manage Cluster Objects
+
+You can use the management console to create, manage, view details, and troubleshoot application resources and Kubernetes objects in all clusters from a single interface. The management console search page supports searching for application resources by the component kind for each resource.
+
+1. Back to the IBM Cloud Pak for Multicloud Management web page tab, click on the **Search** button.
+
+  ![](images/46-cluster-mgmt-img.png)
+
+2. The Search menu gives access to application resources and Kubernetes objects across all managed clusters. It is really powerful feature allowing you to easily find any resource in your IT infrastructure - no matter where it is actually located - public or private cloud. The Search overview screen displays commonly used search filters - a pre-defined templates to view workloads, unhealthy pods and workloads created in last hour. You can also create and save your own search filters. Click on **Created Last Hour** button.
+
+  ![](images/47-cluster-mgmt-img.png)
+
+3. If you scroll down to the **Pod** section, you should see the **demo-modresort** pod that you created earlier in the list along with other pods. You can also provide the search criteria in the filter section. For example: type `kind` and select **pod**, provide the `modresort` as search string and specify `status` as **Running**.
+
+  ![](images/2020-09-18-20-39-41.png)
+
+  Congratulations! You have successfully completed the lab “Multicluster Management with IBM Cloud Pak for Multicloud Management”.
+
+***
+
+## Summary
+
+You completed the Cloud Pak for Multicloud Management tutorial: Multi-cluster Management. Throughout the tutorial, you explored the key takeaways:
+- `Understand Cloud Pak for Multicloud Management`;
+- `Add a managed cluster`;
+- `Deploy an application`;
+-	`Manage and monitor application resources of local and remote clusters`;
+
+If you would like to learn more about Cloud Pak for Multicloud Management, please refer to:
+-	<a href="https://www.ibm.com/cloud/cloud-pak-for-management" target="blank">Cloud Pak for Multicloud Management home page</a>
+- <a href="https://www.ibm.com/demos/collection/Cloud-Pak-for-Multicloud-Management" target="blank">Cloud Pak for Multicloud Management Demos </a>
