@@ -3,7 +3,7 @@ import { HomepageBanner, HomepageCallout } from 'gatsby-theme-carbon';
 import HomepageTemplate from 'gatsby-theme-carbon/src/templates/Homepage';
 import { calloutLink } from './Homepage.module.scss';
 
-import Carbon from '../../images/cloud-data.jpg';
+import Carbon from '../../images/ieam-banner.png';
 
 const FirstLeftText = () => <p>This DemoHub is designed to be a single point of access for all assets related to IBM Edge Application Manager Trial</p>;
 
