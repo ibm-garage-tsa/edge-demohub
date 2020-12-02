@@ -9,6 +9,10 @@ const links = [
   {
     title: 'IBM Cloud Paks',
     href: 'https://www.ibm.com/cloud/paks/',
+  },
+  {
+    title: 'IBM Edge Application Manager',
+    href: 'https://www.ibm.com/cloud/edge-application-manager/',
   }
 ];
 

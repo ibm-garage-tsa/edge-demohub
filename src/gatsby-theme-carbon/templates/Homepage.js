@@ -5,11 +5,11 @@ import { calloutLink } from './Homepage.module.scss';
 
 import Carbon from '../../images/cloud-data.jpg';
 
-const FirstLeftText = () => <p>DemoHub is designed to be a single point of access for all Demo Assets about IBM Cloud Pak for Multicloud Management</p>;
+const FirstLeftText = () => <p>This DemoHub is designed to be a single point of access for all assets related to IBM Edge Application Manager Trial</p>;
 
 const FirstRightText = () => (
   <p>
-    Are you aware that you can have a Cloud Pak for Multicloud Management on ROKS only for you? Here you will see how to request your environment and explore other assets to support your sales opportunity
+    Are you aware that you can have a IBM Edge Application Manager instance running in IBM Cloud only for you? Here you will see how to request your environment and explore other assets to support you with your sales opportunity. Enjoy it!
   </p>
 );
 
@@ -27,7 +27,7 @@ const SecondRightText = () => (
   </p>
 );
 
-const BannerText = () => <h1>IBM Cloud Pak for Multicloud Management</h1>;
+const BannerText = () => <h1>IBM Edge Application Manager</h1>;
 
 const customProps = {
   Banner: <HomepageBanner renderText={BannerText} image={Carbon} />,
