@@ -19,8 +19,9 @@ module.exports = {
     isSearchEnabled: true,
     repository: {
       baseUrl:
-        'https://ibm-garage-tsa.github.io/edge-demohub',
+        'https://github.com/ibm-garage-tsa/edge-demohub',
       subDirectory: '/',
+      branch: 'main'
     },
   },
 }
