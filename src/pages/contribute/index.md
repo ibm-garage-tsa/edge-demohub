@@ -1,12 +1,12 @@
 ---
-title: Contributing to Cloud Pak for Multicloud Management DemoHub
-description: Guide for contributing content to the CP4MCM Bootcamp
-keywords: 'ibm,cam,install,cloud automation manager, cp4mcm'
+title: Contributing to IBM Edge Application Manager DemoHub
+description: Guide for contributing content to the IEAM Demohub
+keywords: 'ibm,edge,ieam'
 ---
 
 <PageDescription>
 
-Anyone can contribute to IBM Cloud Paks playbook projects, whether you are an IBM'er or not.
+Anyone can contribute to IBM Edge Application Manager demohub, whether you are an IBM'er or not.
 We welcome your collaboration & contributions happily, as our reference applications are meant to reflect your real world scenarios.
 There are multiple ways to contribute: report bugs and improvement suggestions, improve documentation, and contribute code.
 </PageDescription>
@@ -41,7 +41,7 @@ We really value contributions, and to maximize the impact of code contributions,
 - One feature / bug fix / documentation update per pull request
   - Always pull the latest changes from upstream and rebase before creating any pull request.  
   - New pull requests should be created against the `integration` branch of the repository, if available.
-  - This ensures new code is included in full-stack integration tests before being merged into the `master` branch
+  - This ensures new code is included in full-stack integration tests before being merged into the `main` branch
 - All new features must be accompanied by associated tests.
   - Make sure all tests pass locally before submitting a pull request.
   - Include tests with every feature enhancement, improve tests with every bug fix
@@ -51,7 +51,7 @@ We really value contributions, and to maximize the impact of code contributions,
 The internet is littered with guides and information on how to use and understand git.
 However, here's a compact guide that follows the suggested workflow
 
-![Github flow](https://ibm-cloud-architecture.github.io/assets/img/github_flow.png)
+![Github flow](images/github_flow.png)
 
 1. Fork the desired repo in github.
 
@@ -61,10 +61,10 @@ However, here's a compact guide that follows the suggested workflow
 
     Note: Guide for step 1-3 here: [forking a repo](https://help.github.com/articles/fork-a-repo/)
 
-4. Create new development branch off the targeted upstream branch.  This will often be `master`.
+4. Create new development branch off the targeted upstream branch.  This will often be `main`.
 
     ```
-    git checkout -b <my-feature-branch> master
+    git checkout -b <my-feature-branch> main
     ```
 
 5. Do your work:
@@ -83,7 +83,7 @@ However, here's a compact guide that follows the suggested workflow
 7. Rebase to the latest upstream changes, resolving any conflicts. This will 'replay' your local commits, one by one, after the changes delivered upstream while you were locally developing, letting you manually resolve any conflict.
 
     ```
-    git branch --set-upstream-to=upstream/master
+    git branch --set-upstream-to=upstream/main
     git rebase
     ```
     Instructions on how to manually resolve a conflict and commit the new change or skip your local replayed commit will be presented on screen by the git CLI.
@@ -98,18 +98,18 @@ However, here's a compact guide that follows the suggested workflow
 
     [Creating a pull request](https://help.github.com/articles/creating-a-pull-request/)
 
-Once the pull request has been reviewed, accepted and merged into the main github repository, you should synchronise your remote and local forked github repository `master` branch with the upstream master branch. To do so:
+Once the pull request has been reviewed, accepted and merged into the main github repository, you should synchronise your remote and local forked github repository `main` branch with the upstream main branch. To do so:
 
-10. Pull to your local forked repository the latest changes upstream (that is, the pull request).
-
-    ```
-    git pull upstream master
-    ```
-
-11. Push those latest upstream changes pulled locally to your remote forked repository.
+1.  Pull to your local forked repository the latest changes upstream (that is, the pull request).
 
     ```
-    git push origin master
+    git pull upstream main
+    ```
+
+2.  Push those latest upstream changes pulled locally to your remote forked repository.
+
+    ```
+    git push origin main
     ```
 
 ### What happens next?
