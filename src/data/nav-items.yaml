@@ -1,7 +1,7 @@
 - title: Getting Started
   pages:
     - title: Requesting Trial
-      path: /environment/overview/
+      path: /environment/requesting/
     - title: Connecting to IEAM
       path: /gettingstarted/
 - title: Learning with Labs
