@@ -15,10 +15,13 @@ description: Enrolling the edge device into IEAM server
 
 <AnchorLinks>
   <AnchorLink>Lab Overview</AnchorLink>
-  <AnchorLink>Prerequisite</AnchorLink>
+  <AnchorLink>Prerequisites</AnchorLink>
   <AnchorLink>Business Context</AnchorLink>
-  <AnchorLink>Create API key</AnchorLink>
-  <AnchorLink>Install the agent</AnchorLink>
+  <AnchorLink>Connecting to the simulated edge device</AnchorLink>
+  <AnchorLink>Create an API key</AnchorLink>
+  <AnchorLink>Install the agent on the edge device</AnchorLink>
+  <AnchorLink>Register the edge device with management hub</AnchorLink>
+  <AnchorLink>Verify the registration</AnchorLink>
   <AnchorLink>Summary</AnchorLink>
 </AnchorLinks>
 
@@ -26,144 +29,233 @@ description: Enrolling the edge device into IEAM server
 
 ## Lab Overview
 
-IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
+  In this tutorial, you will explore the following key capabilities:
 
-IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
-
-In this tutorial, you will explore the following key capabilities:
--	`Understand Cloud Pak for Multicloud Management`
--	`Learn how to add a managed cluster`
-- `learn how to gather monitoring metrics from the managed cluster`
--	`Learn how to deploy an application to the managed cluster`
+  - Understand IBM Edge Application Manager node management
+  - Learn how to add and configure edge nodes
 
 ***
 
-## Prerequisite
+## Prerequisites
 
-- You need to provision your own copy of the CP4MCM 2.0 environment, start it and verify for correct startup (check [here](../../gettingstarted/)).
+  This tutorial assume that you have already started the Trial environment. If you haven't done it yet, please complete first the [Getting Started tutorial](../../gettingstarted/index.mdx)
 
 ***
 
 ## Business Context
 
-As a member of the Cloud Operation team, you are having problems to manage your multicloud hybrid world. Operate your cloud-based services and data across multiple providers is overwhelming your team.
-Your company is deploying multiple Kubernetes clusters to address their specific needs. Some Dev teams are deploying clusters across public and private clouds, and some are deploying clusters across regions, and some are deploying clusters to support the development and test needs.
+  One of the challenges in managing edge devices is scale - there can be hundreds and thousands of devices installed in your company, in many different locations, often far from the data center. Edge nodes can be also on or off the network, which additionally impairs status visibility.
 
-As different teams deploy more clusters, new challenges are introduced:
--	Where are my services running?
--	How can I monitor applications across clusters and clouds?
--	How can I manage clusters as if they were one environment?
--	Where are the failed components?
--	How do I deploy applications across these environments?
--	How do I move workloads across environments?
--	How do I set consistent security policies across environments?
--	Which clusters are compliant?
--	How can I place workloads based on capacity, policy?
+  There are multiple ways to install agent on the edge device. You can explore these in more details looking at [Knowledge Center](https://www.ibm.com/support/knowledgecenter/SSFKVV_4.2/installing/registration.html).
 
-Because of that, you want to explore how IBM Cloud Pak for Multicloud Management, provides consistent visibility, governance and automation of your complex environment.
+  You will complete the following tasks:
 
-In this tutorial, you use a Red Hat OpenShift cluster with Cloud Pak for MCM as a **Management Hub** and a second single-node cluster running MicroK8s as a **managed cluster**
--	Hub cluster includes management console, federated monitoring, and all the controllers. 
--	Managed cluster includes klusterlet components that communicate status back to the Hub cluster. 
-
-The relationship between hub and managed clusters is shown in the diagram below:
-
-![](images/1-cluster-mgmt-img.png)
-
-In this tutorial, you will log in to the Hub cluster to do cluster management.
-
-You will complete the following tasks:
--	Add a managed cluster
--	Visualize cluster topology
--	Visualize clusters and launch to each cluster
-- Deploy remote cluster cloud native monitoring
--	Deploy an application to remote cluster
--	Manage cluster objects
-
+  - Connect to the edge device using ssh
+  -	Create an API key for the edge devices
+  -	Install agent on the edge device
+  -	Register the edge device with management hub
+  - Verify the registration in IBM Edge Application Manager console
+  
 ***
 
 ## Connecting to the simulated edge device
 
-To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty
+  To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty.
 
-Open the link provided you in the reservation confirmation mail. You should see the similar similar to the one shown below:
+  <span style="color:red">**IT IS NOT RECOMMENDED TO USE SKYTAP UI TO CONNECT TO THE MACHINE - YOU WILL USE A TERMINAL CONNECTION DIRECTLY FROM YOUR WORKSTATION**</span>
 
-<span style="color:red">**IT IS NOT RECOMMENDED TO USE SKYTAP UI TO CONNECT TO THE MACHINE - YOU WILL USE A TERMINAL CONNECTION DIRECTLY FROM YOUR WORKSTATION**</span>
+  Copy the **ssh** command provided in the reservation confirmation mail. 
 
-You should see the page that looks like this
+  ![](images/2020-12-09-10-36-51.png)
 
-![](images/2020-12-07-14-53-59.png)
+  In above example, it is **ssh ibmuser@uscentral.demo.ibmcloud.com -p 15303**. It is the SSH port exposed from the virtal machine for your instance.
 
-Take a note of address and the port number, next to the **ubuntu-virtualdev** VM. In above example, it is *services-uscentral.skytap.com* and *13533*. It is the SSH port exposed from the virtal machine for your instance.
+  Open the terminal on your workstation. Connect to the VM using user **ibmuser** with password **passw0rd!**
 
-Open the terminal on your workstation. Connect to the VM using user **ibmuser** with password **passw0rd!**
+  For Mac and Linux
+  ```
+  ssh -p <port> ibmuser@<address>
+  ```
 
-For Mac and Linux
-```
-ssh -p <port> ibmuser@<address>
-```
+  for example:
+  ```
+  ssh -p 14078 localuser@services-uscentral.skytap.com
+  ```
 
-for example:
-```
-ssh -p 14078 localuser@services-uscentral.skytap.com
-```
+  For Windows use putty
 
-For Windows use putty
+  ![](images/2020-01-20-15-25-41.png)
 
-![](images/2020-01-20-15-25-41.png)
+  Upon sucessful login you should see the similar output
 
-Upon sucessful login you should see the similar output
+  ```sh
+  $ ssh ibmuser@services-uscentral.skytap.com -p 13533
+  The authenticity of host '[services-uscentral.skytap.com]:13533 ([184.170.232.54]:13533)' can't be established.
+  ECDSA key fingerprint is SHA256:Qmebxf1haOx+zzp4gPxpB8EZ4N1YQ3rEcQK+jRj5b/Q.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+  Warning: Permanently added '[services-uscentral.skytap.com]:13533,[184.170.232.54]:13533' (ECDSA) to the list of known hosts.
+  ibmuser@services-uscentral.skytap.com's password: 
+  Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 5.4.0-47-generic x86_64)
 
-```sh
-$ ssh ibmuser@services-uscentral.skytap.com -p 13533
-The authenticity of host '[services-uscentral.skytap.com]:13533 ([184.170.232.54]:13533)' can't be established.
-ECDSA key fingerprint is SHA256:Qmebxf1haOx+zzp4gPxpB8EZ4N1YQ3rEcQK+jRj5b/Q.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '[services-uscentral.skytap.com]:13533,[184.170.232.54]:13533' (ECDSA) to the list of known hosts.
-ibmuser@services-uscentral.skytap.com's password: 
-Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 5.4.0-47-generic x86_64)
+  * Documentation:  https://help.ubuntu.com
+  * Management:     https://landscape.canonical.com
+  * Support:        https://ubuntu.com/advantage
 
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/advantage
+  * Introducing self-healing high availability clusters in MicroK8s.
+    Simple, hardened, Kubernetes for production, from RaspberryPi to DC.
 
- * Introducing self-healing high availability clusters in MicroK8s.
-   Simple, hardened, Kubernetes for production, from RaspberryPi to DC.
+      https://microk8s.io/high-availability
 
-     https://microk8s.io/high-availability
+  * Canonical Livepatch is available for installation.
+    - Reduce system reboots and improve kernel security. Activate at:
+      https://ubuntu.com/livepatch
 
- * Canonical Livepatch is available for installation.
-   - Reduce system reboots and improve kernel security. Activate at:
-     https://ubuntu.com/livepatch
+  0 packages can be updated.
+  0 updates are security updates.
 
-0 packages can be updated.
-0 updates are security updates.
-
-Your Hardware Enablement Stack (HWE) is supported until April 2023.
-Last login: Mon Nov 30 11:58:13 2020 from 76.230.154.218
-ibmuser@ubuntu-virtdevice:~$ 
-```
+  Your Hardware Enablement Stack (HWE) is supported until April 2023.
+  Last login: Mon Nov 30 11:58:13 2020 from 1.2.3.4
+  ibmuser@ubuntu-virtdevice:~$ 
+  ```
 
 ***
 
-## Add API key
+## Create an API key
 
-In this section, you will connect to the IBM Edge Application Manager server, generate the API key for your user and use that key to install and register the agent.
+  In this section, you will connect to the IBM Edge Application Manager server, generate the API key for your user and use that key to install and register the agent.
 
+  In the Trial confirmation email for management hub, you have received required credential:
 
+  1) URL
+  2) Username
+  3) Password
 
-  Congratulations! You have successfully completed the lab "Installing IBM Edge Application Manager agent”.
+  ![](images/2020-12-10-15-35-12.png)
+
+  For convenience, create the environment variables with these values, so you can copy/paste all following commands without a need to modify them
+
+  ```sh
+  export USERNAME=<username>
+  export PASSWORD=<password>
+  export URL=<url>
+  ```
+
+  The Username (marked with the red border) is aslo your Organization ID, required to run the commands shown below.
+
+  In the terminal which you used to connect to the edge device, run the following command.
+
+  ```sh
+  cloudctl login -a $URL -u $USERBAME -p $PASSWORD -n $USERNAME --skip-ssl-validation
+  ```
+
+  The output should be similar to the one shown below.
+
+  ![](images/2020-12-10-15-41-30.png)
+
+  Upon successful authentication to the hub, run the following commands to create API key that will be used by your edge devices in communication with the hub.
+
+  ```sh
+  cloudctl iam api-key-create $USERNAME -d $USERNAME -f $USERNAME.json
+  export HZN_EXHANCGE_USER_AUTH=`cat $USERNAME.json | jq -r .apikey`
+  export HZN_ORG_ID=$USERNAME
+  ```
+
+## Install the agent on the edge device
+
+  The required binaries are already downloaded to the virtual machine. Run the following commands to install the agent and register it with the IBM Edge Application Manager management hub.
+
+  ```sh
+  cd agent
+  ./agentinstall.sh
+  ```
+
+  You can verify if the agent installed successfully with the following command:
+
+  ```sh
+  hzn node list
+  ```
+
+  The output should look similar to the one shown below.
+
+  ```sh
+  ibmuser@ubuntu-virtdevice:~/agent$ hzn node list
+  {
+    "id": "",
+    "organization": null,
+    "pattern": null,
+    "name": null,
+    "nodeType": null,
+    "token_last_valid_time": "",
+    "token_valid": null,
+    "ha": null,
+    "configstate": {
+      "state": "unconfigured",
+      "last_update_time": ""
+    },
+    "configuration": {
+      "exchange_api": "https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-exchange/v1/",
+      "exchange_version": "2.54.0",
+      "required_minimum_exchange_version": "2.44.0",
+      "preferred_exchange_version": "2.44.0",
+      "mms_api": "https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-css",
+      "architecture": "amd64",
+      "horizon_version": "2.27.0-173"
+    }
+  }
+  ```
+
+***
+
+## Register the edge device with management hub
+
+  In this step you register the edge device with the management hub. To accomplish that run, the following commands in the terminal connected to your edge device:
+
+  ```sh
+  hzn register -u iamapikey:$HZN_EXHANCGE_USER_AUTH
+  ```
+
+  The output should look similar to the one shown below.
+
+  ```sh
+  Horizon Exchange base URL: https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-exchange/v1
+  Generated random node ID: 35968b9a1d84fdce72f572426349fa58ff96949c.
+  Generated random node token
+  Node dymaczew/35968b9a1d84fdce72f572426349fa58ff96949c does not exist in the Exchange with the specified token, creating/updating it...
+  node added or updated
+  Node 35968b9a1d84fdce72f572426349fa58ff96949c created.
+  No pattern or node policy is specified. Will proceeed with the existing node policy.
+  Initializing the Horizon node with node type 'device'...
+  Note: no input file was specified. This is only valid if none of the services need variables set.
+  However, if there is 'userInput' specified in the node already in the Exchange, the userInput will be used.
+  Changing Horizon state to configured to register this node with Horizon...
+  Horizon node is registered. Workload agreement negotiation should begin shortly. Run 'hzn agreement list' to view.
+  ```
+
+  You can run the `hzn node list` command and compare the output. This time you should see the **"state": "configured"**
+
+***
+
+## Verify the registration
+
+  The last step is to verify the device registration in the IBM Edge Application Manager web console. Open the browser on your workstation and connect to the URL provided in the Trial confirmation e-mail.
+
+  Open the provided link in the browser and you should see the following screen (The Trial envionment is currently using self-signed certificates so accept any warnings and cotinue accessing the website)
+
+  ![](images/2020-12-02-14-21-51.png)
+
+  Click the **Entrprise LDAP** option and login with the credentials from your e-mail.
+
+  Upon successful login, you should see the home screen of the IBM Edge Application Manager
+
+  ![](images/2020-12-10-16-45-09.png)
+
+  Click the number in the **Nodes** section to see the list. Then click the device id. You should see the details of your edge device as shown below.
+
+  ![](images/2020-12-10-16-47-40.png)
 
 ***
 
 ## Summary
 
-You completed the Cloud Pak for Multicloud Management tutorial: Multi-cluster Management. Throughout the tutorial, you explored the key takeaways:
-- `Understand Cloud Pak for Multicloud Management`;
-- `Add a managed cluster`;
-- `Deploy an application`;
--	`Manage and monitor application resources of local and remote clusters`;
+  Congratulations! You have successfully completed the lab "Installing IBM Edge Application Manager agent”. Follow the [Service management tutorial](../svcmgmt/index.md) to learn more.
 
-If you would like to learn more about Cloud Pak for Multicloud Management, please refer to:
--	<a href="https://www.ibm.com/cloud/cloud-pak-for-management" target="blank">Cloud Pak for Multicloud Management home page</a>
-- <a href="https://www.ibm.com/demos/collection/Cloud-Pak-for-Multicloud-Management" target="blank">Cloud Pak for Multicloud Management Demos </a>
