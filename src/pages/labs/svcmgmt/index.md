@@ -8,7 +8,7 @@ description: Managing edge services uing IBM Edge Application Manager
   color="dark"
   >
 
-![banner](/images/agent-banner.jpg)
+![banner](/images/grocery-banner.jpg)
 
 </FeatureCard>
 
@@ -43,7 +43,7 @@ In this tutorial, you will explore the following key capabilities:
 
 ## Prerequisites
 
-This tutorial assume that you have already installed agent on edge device and registered the node to the IBM Edge Application Manager management hub. If you haven't done it yet, please complete first the [Installing IEAM agent tutorial](../agentmgmt/index.mdx)
+This tutorial assume that you have already installed agent on edge device and registered the node to the IBM Edge Application Manager management hub. If you haven't done it yet, please complete first the [Installing IEAM agent tutorial](../agentmgmt/)
 
 ***
 
@@ -53,7 +53,7 @@ Edge computing combined with 5G creates tremendous opportunities for new product
 
 ***
 
-### Scenario Introduction
+## Scenario Introduction
 
 ACME Grocery wants to deliver a new user experience in their stores.
 
@@ -71,90 +71,93 @@ In this scenario, you are the Operations team engineer responsible for managing 
 
 ***
 
-### Registering the edge-device as "smartcart"
-
-To start deploying actual workloads to the test device you need to register it with the properties of the target device. Let\'s start with the \"smartcart\" type. The files needed for further exercises were already placed on the edge-device in the \~/edge-demo directory.
-To collect the latest version of the files, run the following commands
-
-```sh
-cd  
-git clone https://github.com/dymaczew/edge-demo.git
-cd edge-demo
-```
-
-Optionally, you can run the following command to enable subcommand name completion.
-
-```sh
-cat "source /etc/bash_completion.d/hzn_bash_autocomplete.sh" >> ~/.bashrc
-```
-
-If you do this step, exit and re-open the ssh session in terminal window.
 
 
-1. To change the node type and node properties, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
+***
 
-To unregister device run the following command in the Terminal window opened on "edge-device" virtual machine
+## Registering the edge-device as "smartcart"
 
-```sh
-hzn unregister -f
-```
+  If you restarted SSH connection after performing agent installation lab, setup the required environment variables ($USERNAME refers to your user in the IBM Edge Application Manager web console)
 
-2. To define the node as "smartcart" you need to specify the node properties and constraints during registration. This is done using a JSON file containing the node policy. The sample file was already prepared for you. List the content of the file with the following command:
+  ```sh
+  cd
+  export HZN_EXCHANGE_USER_AUTH=iamapikey:`cat $USERNAME.json | jq -r .apikey`
+  export HZN_ORG_ID=$USERNAME
+  ```
 
-```sh
-cat ~/edge-demo/smartcart/smartcart-node-registration.json
-```
+  To start deploying actual workloads to the edge device you need to register it with the properties of the target device. Let's start with the "smartcart" type. The files needed for further exercises are available in the GitHub repository. To collect the latest version of the files, run the following commands
 
-Output will look like:
+  ```sh
+  cd  
+  git clone https://github.com/dymaczew/edge-demo.git
+  cd edge-demo
+  ```
 
-```sh
-{
-  "properties": [
-    {
-      "name": "smartcart",
-      "value": true
-    },
-    {
-      "name": "location",
-      "value": "3801 S Las Vegas Blvd, NV 89109, USA"
-    },
-    {
-      "name": "type",
-      "value": "SmartCart1"
-    }
-  ],
-  "constraints": [
-    "purpose == battery-monitor OR purpose == content-monitor"
-  ]
-}
-```
+  1. To change the node type and node properties, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
 
-3. To register the node, run the following command
+     To unregister device run the following command in the Terminal window opened on "edge-device" virtual machine
 
-```sh
-hzn register --policy=/home/ibmuser/edge-demo/smartcart/smartcartnode-registration.json
-```
+     ```sh
+     hzn unregister -r -f
+     ```
 
-Output should look like below:
+  2. To define the node as "smartcart" you need to specify the node properties and constraints during registration. This is done using a JSON file containing the node policy. The sample file was already prepared for you. List the content of the file with the following command:
 
-```
-Horizon Exchange base URL:
-https://icp-console.10.0.10.2.nip.io/ecexchange/v1 Using node ID 'edge-device' from the Horizon agent
+     ```sh
+     cat ~/edge-demo/smartcart/smartcart-node-registration.json
+     ```
 
-Generated random node token Upating node token\...
+     Output will look like:
 
-Will proceeed with the given node policy.
+     ```sh
+     {
+       "properties": [
+         {
+           "name": "smartcart",
+           "value": true
+         },
+         {
+           "name": "location",
+           "value": "3801 S Las Vegas Blvd, NV 89109, USA"
+         },
+         {
+           "name": "type",
+           "value": "SmartCart1"
+         }
+       ],
+       "constraints": [
+         "purpose == battery-monitor OR purpose == content-monitor"
+       ]
+     }
+     ```
 
-Updating the node policy\...
+  3. To register the node, run the following command
 
-Initializing the Horizon node\... Warning: no input file was specified. This is only valid if none of t he services need variables set (including GPS coordinates). However, if there is \'useInput\' specified in the node already in the exchange, the useInput will be used.
+     ```sh
+     hzn register --policy=/home/ibmuser/edge-demo/smartcart/smartcart-node-registration.json
+     ```
 
-Changing Horizon state to configured to register this node with Horizon\... Horizon node is registered. Workload agreement negotiation should beg in shortly. Run \'hzn agreement list\' to view.
-```
+     Output should look like below:
 
-4. Let's look back at the IBM Edge Application Manager console. After 1-2 minutes, when you refresh the Nodes view you should see the following view
+     ```text
+     Horizon Exchange base URL: https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-exchange/v1
+     Generated random node ID: 1b647860a6de82ff69e1c89695ca18a82aee0089.
+     Generated random node token
+     Node dymaczew/1b647860a6de82ff69e1c89695ca18a82aee0089 does not exist in the Exchange with the specified token, creating/updating it...
+     node added or updated
+     Node 1b647860a6de82ff69e1c89695ca18a82aee0089 created.
+     Will proceeed with the given node policy.
+     Updating the node policy...
+     Initializing the Horizon node with node type 'device'...
+     Note: no input file was specified. This is only valid if none of the services need variables set.
+     However, if there is 'userInput' specified in the node already in the Exchange, the userInput will be used.
+     Changing Horizon state to configured to register this node with Horizon...
+     Horizon node is registered. Workload agreement negotiation should begin shortly. Run 'hzn agreement list' to view
+     ```
 
-![](images/image17.jpg)
+1. Let's look back at the IBM Edge Application Manager console. After 1-2 minutes, when you refresh the Nodes view you should see the following view
+
+![](images/2020-12-10-19-09-16.png)
 
 You can run the "hzn agreement list" and "docker ps" commands in the Terminal window again to verify that the services were actually started at the device.
 

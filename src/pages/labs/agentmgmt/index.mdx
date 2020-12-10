@@ -156,7 +156,7 @@ description: Enrolling the edge device into IEAM server
 
   ```sh
   cloudctl iam api-key-create $USERNAME -d $USERNAME -f $USERNAME.json
-  export HZN_EXHANCGE_USER_AUTH=`cat $USERNAME.json | jq -r .apikey`
+  export HZN_EXCHANGE_USER_AUTH=iamapikey:`cat $USERNAME.json | jq -r .apikey`
   export HZN_ORG_ID=$USERNAME
   ```
 
@@ -211,7 +211,7 @@ description: Enrolling the edge device into IEAM server
   In this step you register the edge device with the management hub. To accomplish that run, the following commands in the terminal connected to your edge device:
 
   ```sh
-  hzn register -u iamapikey:$HZN_EXHANCGE_USER_AUTH
+  hzn register
   ```
 
   The output should look similar to the one shown below.
@@ -257,5 +257,5 @@ description: Enrolling the edge device into IEAM server
 
 ## Summary
 
-  Congratulations! You have successfully completed the lab "Installing IBM Edge Application Manager agent”. Follow the [Service management tutorial](https://ibm-garage-tsa.github.io/edge-demohub/labs/svcmgmt/) to learn more.
+  Congratulations! You have successfully completed the lab "Installing IBM Edge Application Manager agent”. To deploy sample "helloworld" service visit [Open Horizon GitHub](https://github.com/open-horizon/examples/blob/master/edge/services/helloworld/README.md#horizon-hello-world-example-edge-service).
 
