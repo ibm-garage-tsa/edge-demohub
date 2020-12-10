@@ -43,12 +43,6 @@ In this tutorial, you will explore the following key capabilities:
 
 ## Prerequisites
 
-- You need to provision your own IBM Edge Application Manager Trial, start it and verify for correct startup (check [here](https://ibm-garage-tsa.github.io/edge-demohub/gettingstarted/)).
-
-***
-
-## Prerequisites
-
 This tutorial assume that you have already installed agent on edge device and registered the node to the IBM Edge Application Manager management hub. If you haven't done it yet, please complete first the [Installing IEAM agent tutorial](../agentmgmt/index.mdx)
 
 ***
