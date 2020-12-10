@@ -137,7 +137,7 @@ description: Enrolling the edge device into IEAM server
   ```sh
   export USERNAME=<username>
   export PASSWORD=<password>
-  export URL=<url>
+  export URL=https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud
   ```
 
   The Username (marked with the red border) is aslo your Organization ID, required to run the commands shown below.
@@ -145,7 +145,7 @@ description: Enrolling the edge device into IEAM server
   In the terminal which you used to connect to the edge device, run the following command.
 
   ```sh
-  cloudctl login -a $URL -u $USERBAME -p $PASSWORD -n $USERNAME --skip-ssl-validation
+  cloudctl login -a $URL -u $USERNAME -p $PASSWORD -n $USERNAME --skip-ssl-validation
   ```
 
   The output should be similar to the one shown below.
