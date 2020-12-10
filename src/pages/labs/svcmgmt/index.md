@@ -15,10 +15,12 @@ description: Managing edge services uing IBM Edge Application Manager
 
 <AnchorLinks>
   <AnchorLink>Lab Overview</AnchorLink>
-  <AnchorLink>Prerequisite</AnchorLink>
+  <AnchorLink>Prerequisites</AnchorLink>
   <AnchorLink>Business Context</AnchorLink>
-  <AnchorLink>Create API key</AnchorLink>
-  <AnchorLink>Install the agent</AnchorLink>
+  <AnchorLink>Scenario Introduction</AnchorLink>
+  <AnchorLink>Registering the edge-device as "smartcart"</AnchorLink>
+  <AnchorLink>Working with services</AnchorLink>
+  <AnchorLink>Registering the edge-device as "smartscale"</AnchorLink>
   <AnchorLink>Summary</AnchorLink>
 </AnchorLinks>
 
@@ -31,36 +33,29 @@ IBM Cloud Pak for Multicloud Management provides consistent visibility, automati
 IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
 
 In this tutorial, you will explore the following key capabilities:
--	`Understand Cloud Pak for Multicloud Management`
--	`Learn how to add a managed cluster`
-- `learn how to gather monitoring metrics from the managed cluster`
--	`Learn how to deploy an application to the managed cluster`
+
+- Understand IBM Edge Application Manager
+- Learn how to add and configure edge nodes
+- Learn how to register a new edge workloads (services)
+- Learn how to enable autonomous management with policies
 
 ***
 
-## Prerequisite
+## Prerequisites
 
-- You need to provision your own IBM Edge Application Manager Trial, start it and verify for correct startup (check [here](../../gettingstarted/)).
+- You need to provision your own IBM Edge Application Manager Trial, start it and verify for correct startup (check [here](https://ibm-garage-tsa.github.io/edge-demohub/gettingstarted/)).
+
+***
+
+## Prerequisites
+
+This tutorial assume that you have already installed agent on edge device and registered the node to the IBM Edge Application Manager management hub. If you haven't done it yet, please complete first the [Installing IEAM agent tutorial](../agentmgmt/index.mdx)
 
 ***
 
 ## Business Context
 
 Edge computing combined with 5G creates tremendous opportunities for new products, platforms, and experiences in every industry. Edge brings computation and data storage closer to where data is created by people, places and things - to enable faster insights and actions, reduce data exposure and maintain continuous operations. By 2025, 75 percent of enterprise data will be processed at the Edge, compared to only 10 percent today. IBM extends cloud computing to the Edge, with autonomous management capabilities that address new challenges of massive scale, variability, and rate of change - in enterprises and in telcos. [IBM Edge Application Manager](https://www.ibm.com/cloud/edge-application-manager) runs on Red Hat OpenShift, the leading open hybrid multicloud platform that runs anywhere - from any data center, to multiple clouds, to the edge.
-
-## Takeaways
-
-- Understand IBM Edge Application Manager
-
-- Learn how to add and configure edge nodes
-
-- Learn how to register a new edge workloads (services)
-
-- Learn how to enable autonomous management with policies
-
-## Prerequisites
-
-This tutorial assume that you have already installed agent on edge device and registered the node to the IBM Edge Application Manager management hub. If you haven't done it yet, please complete first the [Installing IEAM agent tutorial](../agentmgmt/index.mdx)
 
 ***
 
@@ -82,42 +77,43 @@ In this scenario, you are the Operations team engineer responsible for managing 
 
 ***
 
-### Registering the edge-device as \"smartcart\"
+### Registering the edge-device as "smartcart"
 
 To start deploying actual workloads to the test device you need to register it with the properties of the target device. Let\'s start with the \"smartcart\" type. The files needed for further exercises were already placed on the edge-device in the \~/edge-demo directory.
 To collect the latest version of the files, run the following commands
 
-```
-cd ~/edge-demo 
-git pull
+```sh
+cd  
+git clone https://github.com/dymaczew/edge-demo.git
+cd edge-demo
 ```
 
-Optionally, you can run the following command to enable subcommand name completion 
+Optionally, you can run the following command to enable subcommand name completion.
 
-```
+```sh
 cat "source /etc/bash_completion.d/hzn_bash_autocomplete.sh" >> ~/.bashrc
 ```
 
-If you do this step, close and re-open the terminal window.
+If you do this step, exit and re-open the ssh session in terminal window.
 
-Steps
 
-1.  To change the node type and node properties, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
+1. To change the node type and node properties, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
 
 To unregister device run the following command in the Terminal window opened on "edge-device" virtual machine
 
-```
+```sh
 hzn unregister -f
 ```
 
-2.  To define the node as "smartcart" you need to specify the node properties and constraints during registration. This is done using a JSON file containing the node policy. The sample file was already prepared for you. List the content of the file with the following command:
+2. To define the node as "smartcart" you need to specify the node properties and constraints during registration. This is done using a JSON file containing the node policy. The sample file was already prepared for you. List the content of the file with the following command:
 
-```
-cat ~/edge-demo/smartcart/smartcart-node-registration.json 
+```sh
+cat ~/edge-demo/smartcart/smartcart-node-registration.json
 ```
 
 Output will look like:
-```
+
+```sh
 {
   "properties": [
     {
@@ -141,8 +137,8 @@ Output will look like:
 
 3. To register the node, run the following command
 
-```
-hzn register --policy=/home/localuser/edge-demo/smartcart/smartcartnode-registration.json
+```sh
+hzn register --policy=/home/ibmuser/edge-demo/smartcart/smartcartnode-registration.json
 ```
 
 Output should look like below:
@@ -164,7 +160,7 @@ Changing Horizon state to configured to register this node with Horizon\... Hori
 
 4. Let's look back at the IBM Edge Application Manager console. After 1-2 minutes, when you refresh the Nodes view you should see the following view
 
-![](.//media/image17.jpg)
+![](images/image17.jpg)
 
 You can run the "hzn agreement list" and "docker ps" commands in the Terminal window again to verify that the services were actually started at the device.
 
@@ -178,24 +174,24 @@ Let's look at the services defined in the environment and check their requiremen
 
 2.  Notice there are many different services owned by different users. Each version of the service represents a specific version of the Docker container to be running on the edge nodes. Click the '**ibm.cpu**' service.
 
-![](.//media/image18.jpg)
+![](images/image18.jpg)
 
 You can see that this utility service designed to monitor CPU load is available for different processor architectures: arm, arm64, and amd64 (x86_64).
 
-![](.//media/image19.jpg)
+![](images/image19.jpg)
 
 This service can be installed on the devices to control that the other services that use compute-intensive machine learning models do not overload the device.
 
 3.  Click the search box (**Find services**), select the "**Service ID**" as the filter and type **battery** to find the service that is currently running on the edge device.
-![](.//media/image20.png)
+![](images/image20.png)
 
 4.  Click the service tile (**battery-service**) to see the details of the service definition.
 
-![](.//media/image21.jpg)
+![](images/image21.jpg)
 
 5.  Look at the service properties and constraints. Notice there is a "battery-monitor-deployment" policy in Deployment section.
 
-![](.//media/image22.jpg)
+![](images/image22.jpg)
 
 This view provides you with the information where the service potentially can be deployed (for example, how much memory is needed and so on), and list the policies that already govern the deployment of this service to devices.
 
@@ -255,25 +251,25 @@ Steps
 
 2.  You can notice that there is no deployment policy defined for that service. Let's create one. Click **Create deployment policy**.
 
-![](.//media/image23.jpg)
+![](images/image23.jpg)
 
 3.  Provide the policy name and description. Notice that the service name and version are already defined, as you initiated the policy creation from the service context. Click **Next** to proceed.
 
-![](.//media/image24.jpg)
+![](images/image24.jpg)
 
 4.  In the second step you need to define which devices should be targeted for deployment. You can use any of the properties defined for the edge nodes. For the scenario let's use the "smartscale" "is equal" "true". Enter the values and click **Next**.
 
-![](.//media/image25.jpg)
+![](images/image25.jpg)
 
 5.  You don't need to change anything on the Advance settings tab, so just click **Next** and then in the Summary page click **Deploy service**
 
-![](.//media/image26.jpg)
+![](images/image26.jpg)
 
 6.  Let's verify that the service was successfully deployed. Go back to termial window (or open new one using the shortcut on the desktop) and check the agreements and running containers. (If you forgot how to do this, look back to the step 4 in **Registering the edgedevice as "smartcart"** section above).
 
 You can also verify the results in UI, looking at the details of edge-device node
 
-![](.//media/image27.jpg)
+![](images/image27.jpg)
 
 Congratulations! Your deployment policy is working! Any new smartscale device connected to the IBM Edge Application Manager hub will get the service deployed automatically.
 

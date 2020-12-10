@@ -12,8 +12,6 @@
       path: /labs/overview/
     - title: Before You Start
       path: /gettingstarted/
-    - title: Introduction
-      path: /labs/introduction/
     - title: Lab 1 - Installing IEAM agent
       path: /labs/agentmgmt/
     - title: Lab 2 - Deploying edge services 
