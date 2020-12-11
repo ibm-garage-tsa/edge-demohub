@@ -8,7 +8,7 @@ description: Enrolling the edge device into IEAM server
   color="dark"
   >
 
-![banner](/images/agent-banner.jpg)
+![banner](/images/agent-banner.png)
 
 </FeatureCard>
 
@@ -68,18 +68,18 @@ description: Enrolling the edge device into IEAM server
 
   ![](images/2020-12-09-10-36-51.png)
 
-  In above example, it is **ssh ibmuser@uscentral.demo.ibmcloud.com -p 15303**. It is the SSH port exposed from the virtal machine for your instance.
+  In above example, it is `ssh ibmuser@uscentral.demo.ibmcloud.com -p 15303`. It is the SSH port exposed from the virtal machine for your instance.
 
   Open the terminal on your workstation. Connect to the VM using user **ibmuser** with password **passw0rd!**
 
   For Mac and Linux
   ```
-  ssh -p <port> ibmuser@<address>
+  ssh ibmuser@<address> -p <port> 
   ```
 
   for example:
   ```
-  ssh -p 14078 localuser@services-uscentral.skytap.com
+  ssh ibmuser@services-uscentral.skytap.com -p 15303 
   ```
 
   For Windows use putty
@@ -89,11 +89,11 @@ description: Enrolling the edge device into IEAM server
   Upon sucessful login you should see the similar output
 
   ```sh
-  $ ssh ibmuser@services-uscentral.skytap.com -p 13533
+  $ ssh ibmuser@services-uscentral.skytap.com -p 15303
   The authenticity of host '[services-uscentral.skytap.com]:13533 ([184.170.232.54]:13533)' can't be established.
   ECDSA key fingerprint is SHA256:Qmebxf1haOx+zzp4gPxpB8EZ4N1YQ3rEcQK+jRj5b/Q.
   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-  Warning: Permanently added '[services-uscentral.skytap.com]:13533,[184.170.232.54]:13533' (ECDSA) to the list of known hosts.
+  Warning: Permanently added '[services-uscentral.skytap.com]:15303,[184.170.232.54]:15303' (ECDSA) to the list of known hosts.
   ibmuser@services-uscentral.skytap.com's password: 
   Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 5.4.0-47-generic x86_64)
 

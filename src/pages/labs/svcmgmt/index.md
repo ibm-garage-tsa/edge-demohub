@@ -8,7 +8,7 @@ description: Managing edge services uing IBM Edge Application Manager
   color="dark"
   >
 
-![banner](/images/grocery-banner.jpg)
+![banner](/images/grocery-banner.png)
 
 </FeatureCard>
 
@@ -28,16 +28,16 @@ description: Managing edge services uing IBM Edge Application Manager
 
 ## Lab Overview
 
-IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
+    IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
 
-IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
+    IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
 
-In this tutorial, you will explore the following key capabilities:
+    In this tutorial, you will explore the following key capabilities:
 
-- Understand IBM Edge Application Manager
-- Learn how to add and configure edge nodes
-- Learn how to register a new edge workloads (services)
-- Learn how to enable autonomous management with policies
+    - Understand IBM Edge Application Manager
+    - Learn how to add and configure edge nodes
+    - Learn how to register a new edge workloads (services)
+    - Learn how to enable autonomous management with policies
 
 ***
 
@@ -49,33 +49,31 @@ This tutorial assume that you have already installed agent on edge device and re
 
 ## Business Context
 
-Edge computing combined with 5G creates tremendous opportunities for new products, platforms, and experiences in every industry. Edge brings computation and data storage closer to where data is created by people, places and things - to enable faster insights and actions, reduce data exposure and maintain continuous operations. By 2025, 75 percent of enterprise data will be processed at the Edge, compared to only 10 percent today. IBM extends cloud computing to the Edge, with autonomous management capabilities that address new challenges of massive scale, variability, and rate of change - in enterprises and in telcos. [IBM Edge Application Manager](https://www.ibm.com/cloud/edge-application-manager) runs on Red Hat OpenShift, the leading open hybrid multicloud platform that runs anywhere - from any data center, to multiple clouds, to the edge.
+  Edge computing combined with 5G creates tremendous opportunities for new products, platforms, and experiences in every industry. Edge brings computation and data storage closer to where data is created by people, places and things - to enable faster insights and actions, reduce data exposure and maintain continuous operations. By 2025, 75 percent of enterprise data will be processed at the Edge, compared to only 10 percent today. IBM extends cloud computing to the Edge, with autonomous management capabilities that address new challenges of massive scale, variability, and rate of change - in enterprises and in telcos. [IBM Edge Application Manager](https://www.ibm.com/cloud/edge-application-manager) runs on Red Hat OpenShift, the leading open hybrid multicloud platform that runs anywhere - from any data center, to multiple clouds, to the edge.
 
 ***
 
 ## Scenario Introduction
 
-ACME Grocery wants to deliver a new user experience in their stores.
+    ACME Grocery wants to deliver a new user experience in their stores.
 
-ACME Grocery is a retail chain that recently started a project to modernize its stores to enhance customer experience and achieve cost savings adopting some of the modern AI-based technologies. In the first phase of the project, the retail chain is deploying smart devices in its locations distributed across the country.
+    ACME Grocery is a retail chain that recently started a project to modernize its stores to enhance customer experience and achieve cost savings adopting some of the modern AI-based technologies. In the first phase of the project, the retail chain is deploying smart devices in its locations distributed across the country.
 
-There are two types of devices to be managed:
+    There are two types of devices to be managed:
 
-- **Smart shopping carts** (also known aa "smartcarts")
+    - **Smart shopping carts** (also known aa "smartcarts")
 
-- **Smart scales** for weighting unpackaged goods, which automatically
-    detect what is being weighted to apply correct price (smart camera
-    with AI-based visual recognition)
+    - **Smart scales** for weighting unpackaged goods, which automatically
+        detect what is being weighted to apply correct price (smart camera
+        with AI-based visual recognition)
 
-In this scenario, you are the Operations team engineer responsible for managing the smart devices at scale.
-
-***
-
-
+    In this scenario, you are the Operations team engineer responsible for managing the smart devices at scale.
 
 ***
 
-## Registering the edge-device as "smartcart"
+## Publish edge services
+
+  To start deploying workloads to edge devices you have to first define the services in the IBM Edge Application Manager management hub. The detailed instructions are available in the [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing_edge_services.html). For the following lab, you can use the shortened version using the files prepared for you in the GitHub respository and sample docker images already published to the DockerHub.
 
   If you restarted SSH connection after performing agent installation lab, setup the required environment variables ($USERNAME refers to your user in the IBM Edge Application Manager web console)
 
@@ -93,7 +91,20 @@ In this scenario, you are the Operations team engineer responsible for managing 
   cd edge-demo
   ```
 
-  1. To change the node type and node properties, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
+  To publish a service you have to first create the signing key. This key will be used to ensure the service origination and will prevent tampering or unathorized modifications to service metadata.
+
+  The repository that you have copied above contains the definitions of multiple services and a script that will automate the process. To run the script issue the following command in the terminal windows connected to your edge device:
+
+  ```sh
+  publish-services.sh
+  ```
+
+  
+***
+
+## Registering the edge-device as "smartcart"
+
+  1. Node properties can be defined in the Web cosnole of IBM Edge Application Manager, however this approach is not practical to manage devices at scale. In the following exercise you will use a scripted approach leveraging the Horizon CLI. To change the node type and node properties uzing the `hzn` command, you need to first unregister the device from the IBM Edge Application Manager server. This activity is done usually only in the development and testing phase. In real life, the physical edge devices get their configuration during the initial install process.
 
      To unregister device run the following command in the Terminal window opened on "edge-device" virtual machine
 

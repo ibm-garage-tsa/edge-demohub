@@ -8,6 +8,8 @@
       path: /gettingstarted/
 - title: Learning with Labs
   pages:
+    - title: Labs Overview
+      path: /labs/overview/
     - title: Before You Start
       path: /gettingstarted/
     - title: Lab 1 - Installing IEAM agent
