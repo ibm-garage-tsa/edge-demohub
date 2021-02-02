@@ -8,7 +8,7 @@ description: Getting Started with IBM Edge Application Manager Trial
   color="dark"
   >
 
-![banner](/images/gettingstarted-banner.jpg)
+![banner](/images/gettingstarted-banner.png)
 
 </FeatureCard>
 
@@ -25,21 +25,17 @@ description: Getting Started with IBM Edge Application Manager Trial
   - instance of the IBM Edge Application Manager running on IBM Cloud (Management Hub)
   - sample virtual machine simulating the edge device (Edge node)
 
-  When the Trial environment is provisioned you should receive the two e-mails with links and access credentials as shown below.
+  When the Trial environment is provisioned you should receive an e-mail with links and access credentials as shown below.
 
-  - Edge node reservation e-mail
+  - Edge trial reservation e-mail
 
-  ![email-device](images/2020-12-09-10-36-51.png)
-
-  - Management hub reservation e-mail
-
-  ![](images/2020-12-11-12-39-33.png)
+  ![](images/2021-02-02-12-40-56.png)
 
 ## Accessing the IBM Edge Application Manager instance
 
   In the email confirming the Management hub reservation, there is a link to the Management hub and your access credentials.
 
-  ![email-hub](images/2020-12-10-16-42-03.png)
+  ![](images/2021-02-02-12-42-09.png)
 
   Open the provided link in the browser and you should see the following screen (The Trial envionment is currently using self-signed certificates so accept any warnings and cotinue accessing the website)
 
@@ -49,7 +45,7 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   Upon successful login, you should see the home screen of the IBM Edge Application Manager
 
-  ![](images/2020-12-02-14-26-28.png)
+  ![](images/2021-02-02-13-01-15.png)
 
 ***
 
@@ -57,97 +53,116 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   As a part of the Trial experience you are provided with the sample simulated edge device. In case you do not have any real edge devices you can access the provided virtual machine and follow the tutorials.
 
-  ![](images/2020-12-09-11-20-00.png)
-
-  Click **Access Trial** button (it should open a browser) and when prompted for Virtual machine access, provide the **Desktop password** from the e-mail.
-
-  ![virtual_machine_access](images/2020-12-09-13-06-52.png)
-
-  Start the environment with the Play button in the top-right corner
-
-  ![play](images/2020-09-11-10-29-24.png)
-
-  It takes about 2-3 minutes for the virtual machine to start
-
-  ***
+  ![](images/2021-02-02-12-43-28.png)
 
   To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty
 
-  <span style="color:red">**IT IS NOT RECOMMENDED TO USE SKYTAP UI TO CONNECT TO THE MACHINE - YOU WILL USE A TERMINAL CONNECTION DIRECTLY FROM YOUR WORKSTATION**</span>
 
   Copy the **ssh** command provided in the reservation confirmation mail. 
 
-  ![](images/2020-12-09-10-36-51.png)
-
-  In above example, it is **ssh ibmuser@uscentral.demo.ibmcloud.com -p 15303**. It is the SSH port exposed from the virtal machine for your instance.
-
-  Open the terminal on your workstation. Connect to the VM using user **ibmuser** with password **passw0rd!**
+  Open the terminal on your workstation. Connect to the VM using provided credentials (User and password to the hub are the same as to the virtual edge device)
 
   For Mac and Linux
   ```
-  ssh ibmuser@<address> -p <port>
+  ssh <user>@<address> 
   ```
 
   for example:
   ```
-  ssh ibmuser@uscentral.demo.ibmcloud.com -p 15303
+  ssh ssh 270xx4w3qr@169.47.95.9
   ```
 
   For Windows use putty
 
-  ![](images/2020-12-09-11-45-44.png)
-
   Upon sucessful login you should see the similar output
 
   ```sh
-  $ ssh ibmuser@services-uscentral.skytap.com -p 15303
-  The authenticity of host '[services-uscentral.skytap.com]:13533 ([184.170.232.54]:13533)' can't be established.
-  ECDSA key fingerprint is SHA256:Qmebxf1haOx+zzp4gPxpB8EZ4N1YQ3rEcQK+jRj5b/Q.
+  $ ssh 270xx4w3qr@169.47.95.29
+  The authenticity of host '169.47.95.29 (169.47.95.29)' can't be established.
+  ECDSA key fingerprint is SHA256:Z+ILGgBEa0XJyvoVeNfdUWzyH1nocowc1q5NzNPK+kY.
   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-  Warning: Permanently added '[services-uscentral.skytap.com]:13533,[184.170.232.54]:13533' (ECDSA) to the list of known hosts.
-  ibmuser@services-uscentral.skytap.com's password: 
-  Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 5.4.0-47-generic x86_64)
+  Warning: Permanently added '169.47.95.29' (ECDSA) to the list of known hosts.
+  270xx4w3qr@169.47.95.29's password: 
+  Permission denied, please try again.
+  270xx4w3qr@169.47.95.29's password: 
+  Permission denied, please try again.
+  270xx4w3qr@169.47.95.29's password: 
+  Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-42-generic x86_64)
 
-   * Documentation:  https://help.ubuntu.com
-   * Management:     https://landscape.canonical.com
-   * Support:        https://ubuntu.com/advantage
+  * Documentation:  https://help.ubuntu.com
+  * Management:     https://landscape.canonical.com
+  * Support:        https://ubuntu.com/advantage
 
-   * Introducing self-healing high availability clusters in MicroK8s.
-     Simple, hardened, Kubernetes for production, from RaspberryPi to DC.
+    Get cloud support with Ubuntu Advantage Cloud Guest:
+      http://www.ubuntu.com/business/services/cloud
 
-       https://microk8s.io/high-availability
 
-   * Canonical Livepatch is available for installation.
-     - Reduce system reboots and improve kernel security. Activate at:
-       https://ubuntu.com/livepatch
+  The programs included with the Ubuntu system are free software;
+  the exact distribution terms for each program are described in the
+  individual files in /usr/share/doc/*/copyright.
 
-  0 packages can be updated.
-  0 updates are security updates.
+  Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+  applicable law.
 
-  Your Hardware Enablement Stack (HWE) is supported until April 2023.
-  Last login: Mon Nov 30 11:58:13 2020 from 76.230.154.218
-  ibmuser@ubuntu-virtdevice:~$ 
+  270xx4w3qr@vm-270xx4w3qr:~$
   ```
 
 ***
 
-## Accessing the virtual edge device desktop
+## Running sample commands
 
-  In case you would like to access the desktop of the provided virtual machine, follow the instructions below.
+The simulated edge device is automatically registered to the IBM Edge Application Manager Hub, and is running a sample pattern. You can start exploring running the following commands:
 
-  Click the screen representing the virtual machine
+  ```sh
+  hzn node list
+  {
+    "id": "vm-270xx4w3qr",
+    "organization": "270xx4w3qr",
+    "pattern": "IBM/pattern-ibm.helloworld",
+    "name": "vm-270xx4w3qr",
+    "nodeType": "device",
+    "token_last_valid_time": "2021-02-01 07:24:31 +0000 UTC",
+    "token_valid": true,
+    "ha": false,
+    "configstate": {
+      "state": "configured",
+      "last_update_time": "2021-02-01 07:24:31 +0000 UTC"
+    },
+    "configuration": {
+      "exchange_api": "https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-exchange/v1/",
+      "exchange_version": "2.54.0",
+      "required_minimum_exchange_version": "2.44.0",
+      "preferred_exchange_version": "2.44.0",
+      "mms_api": "https://cp-console.edgetrials4-3195e5b101a2fc76b9c4875fb79cfa25-0000.us-south.containers.appdomain.cloud/edge-css",
+      "architecture": "amd64",
+      "horizon_version": "2.27.0-173"
+    }
+  }
 
-  ![](images/2020-12-09-13-15-49.png)
+  hzn agreement list
+  [
+    {
+      "name": "pattern-ibm.helloworld_ibm.helloworld_IBM_amd64 merged with pattern-ibm.helloworld_ibm.helloworld_IBM_amd64",
+      "current_agreement_id": "e74dde5349b7eab24b4ca48e6933b45324011a3ef98f6683a183aa1d1195b3a9",
+      "consumer_id": "IBM/agbot",
+      "agreement_creation_time": "2021-02-01 07:24:53 +0000 UTC",
+      "agreement_accepted_time": "2021-02-01 07:25:03 +0000 UTC",
+      "agreement_finalized_time": "2021-02-01 07:25:03 +0000 UTC",
+      "agreement_execution_start_time": "2021-02-01 07:25:06 +0000 UTC",
+      "agreement_data_received_time": "",
+      "agreement_protocol": "Basic",
+      "workload_to_run": {
+        "url": "ibm.helloworld",
+        "org": "IBM",
+        "version": "1.0.0",
+        "arch": "amd64"
+      }
+    }
+  ]
 
-  You should see the following screen
+  docker ps
+  CONTAINER ID   IMAGE                              COMMAND                  CREATED         STATUS         PORTS     NAMES
+  26aace4fe9ab   openhorizon/ibm.helloworld_amd64   "/bin/sh -c /service…"   9 minutes ago   Up 9 minutes             e74dde5349b7eab24b4ca48e6933b45324011a3ef98f6683a183aa1d1195b3a9-ibm.helloworld
+  ```
 
-  ![](images/2020-12-09-13-16-11.png)
-
-  Click on the screen or hit enter key, then select the **ibmuser**. You can type in password **passw0rd!** or insert the stored credentials as shown below
-
-  ![](images/2020-12-09-13-17-51.png)
-
-  You can resize the virtual desktop with the **Fit to window** button
-
-  ![](images/2020-09-11-11-06-42.png)
-
+This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product Knowledge Center.

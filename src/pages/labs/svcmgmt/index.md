@@ -28,16 +28,12 @@ description: Managing edge services uing IBM Edge Application Manager
 
 ## Lab Overview
 
-    IBM Cloud Pak for Multicloud Management provides consistent visibility, automation, and governance across a range of multicloud management capabilities such as cost and asset management, infrastructure management, application management, multi-cluster management, edge management, and integration with existing tools and processes. Customers can leverage Cloud Pak for Multicloud Management to simplify their IT and application ops management, while increasing flexibility and cost savings with intelligent data analysis driven by predictive signals.
+In this tutorial, you will explore the following key capabilities:
 
-    IBM Cloud Pak for Multicloud Management can manage Kubernetes clusters that are deployed on any target infrastructure - either in your own data center or in a public cloud.
-
-    In this tutorial, you will explore the following key capabilities:
-
-    - Understand IBM Edge Application Manager
-    - Learn how to add and configure edge nodes
-    - Learn how to register a new edge workloads (services)
-    - Learn how to enable autonomous management with policies
+- Understand IBM Edge Application Manager
+- Learn how to add and configure edge nodes
+- Learn how to register a new edge workloads (services)
+- Learn how to enable autonomous management with policies
 
 ***
 
@@ -99,7 +95,7 @@ This tutorial assume that you have already installed agent on edge device and re
   publish-services.sh
   ```
 
-  
+
 ***
 
 ## Registering the edge-device as "smartcart"
