@@ -14,20 +14,18 @@ description: Getting Started with IBM Edge Application Manager Trial
 
 ***
 
-  ## Prerequisites
+## Prerequisites
 
   To get started, you need the IBM Edge Application Manager Trial environment. To request one, follow the instructions here: [Requesting the Trial](https://ibm-garage-tsa.github.io/edge-demohub/environment/requesting/)
 
-  ## Accessing the Trial environment
+## Accessing the Trial environment
 
   There are two elements of the Trial environment:
 
   - instance of the IBM Edge Application Manager running on IBM Cloud (Management Hub)
   - sample virtual machine simulating the edge device (Edge node)
 
-  When the Trial environment is provisioned you should receive an e-mail with links and access credentials as shown below.
-
-  - Edge trial reservation e-mail
+  When the Trial environment is provisioned, you should receive an e-mail with links and access credentials as shown below.
 
   ![](images/2021-02-03-16-37-58.png)
 
@@ -37,7 +35,7 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   ![](images/2021-02-03-16-22-44.png)
 
-  Open the provided link in the browser and you should see the following screen (The Trial envionment is currently using self-signed certificates so accept any warnings and cotinue accessing the website)
+  Open the provided link in the browser and you should see the following screen. (The Trial envionment is currently using self-signed certificates so accept any warnings and continue accessing the website)
 
   ![](images/2020-12-02-14-21-51.png)
 
@@ -60,18 +58,20 @@ description: Getting Started with IBM Edge Application Manager Trial
   Open the terminal on your workstation. Connect to the VM using provided credentials (User and password to the hub are the same as to the virtual edge device)
 
   For Mac and Linux
-  ```
+
+  ```sh
   ssh <user>@<address> 
   ```
 
   for example:
-  ```
+
+  ```sh
   ssh 270xx4w3qr@169.47.95.9
   ```
 
-  For Windows use putty
+  For Windows use putty.
 
-  Upon sucessful login you should see the similar output
+  Upon sucessful login you should see the similar output:
 
   ```sh
   $ ssh 270xx4w3qr@169.47.95.29
@@ -79,10 +79,6 @@ description: Getting Started with IBM Edge Application Manager Trial
   ECDSA key fingerprint is SHA256:Z+ILGgBEa0XJyvoVeNfdUWzyH1nocowc1q5NzNPK+kY.
   Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
   Warning: Permanently added '169.47.95.29' (ECDSA) to the list of known hosts.
-  270xx4w3qr@169.47.95.29's password: 
-  Permission denied, please try again.
-  270xx4w3qr@169.47.95.29's password: 
-  Permission denied, please try again.
   270xx4w3qr@169.47.95.29's password: 
   Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-42-generic x86_64)
 
@@ -108,7 +104,7 @@ description: Getting Started with IBM Edge Application Manager Trial
 
 ## Running sample commands
 
-The simulated edge device is automatically registered to the IBM Edge Application Manager Hub, and is running a sample pattern. You can start exploring running the following commands:
+  The simulated edge device is automatically registered to the IBM Edge Application Manager hub, and is running a sample pattern. You can start exploring running the following commands:
 
   ```sh
   hzn node list
@@ -162,4 +158,4 @@ The simulated edge device is automatically registered to the IBM Edge Applicatio
   26aace4fe9ab   openhorizon/ibm.helloworld_amd64   "/bin/sh -c /service…"   9 minutes ago   Up 9 minutes             e74dde5349b7eab24b4ca48e6933b45324011a3ef98f6683a183aa1d1195b3a9-ibm.helloworld
   ```
 
-This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing.html).
+  This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing.html).
