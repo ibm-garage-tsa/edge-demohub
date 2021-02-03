@@ -29,13 +29,13 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   - Edge trial reservation e-mail
 
-  ![](images/2021-02-02-12-40-56.png)
+  ![](images/2021-02-03-16-37-58.png)
 
-## Accessing the IBM Edge Application Manager instance
+## Accessing the IBM Edge Application Manager management hub
 
-  In the email confirming the Management hub reservation, there is a link to the Management hub and your access credentials.
+  In the email confirming the Trial reservation, there is a link to the Management hub and your access credentials.
 
-  ![](images/2021-02-02-12-42-09.png)
+  ![](images/2021-02-03-16-22-44.png)
 
   Open the provided link in the browser and you should see the following screen (The Trial envionment is currently using self-signed certificates so accept any warnings and cotinue accessing the website)
 
@@ -49,16 +49,13 @@ description: Getting Started with IBM Edge Application Manager Trial
 
 ***
 
-## Accessing and starting a simulated edge device
+## Accessing the simulated edge device
 
   As a part of the Trial experience you are provided with the sample simulated edge device. In case you do not have any real edge devices you can access the provided virtual machine and follow the tutorials.
 
-  ![](images/2021-02-02-12-43-28.png)
+  ![](images/2021-02-03-16-20-30.png)
 
   To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty
-
-
-  Copy the **ssh** command provided in the reservation confirmation mail. 
 
   Open the terminal on your workstation. Connect to the VM using provided credentials (User and password to the hub are the same as to the virtual edge device)
 
@@ -69,7 +66,7 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   for example:
   ```
-  ssh ssh 270xx4w3qr@169.47.95.9
+  ssh 270xx4w3qr@169.47.95.9
   ```
 
   For Windows use putty
@@ -165,4 +162,4 @@ The simulated edge device is automatically registered to the IBM Edge Applicatio
   26aace4fe9ab   openhorizon/ibm.helloworld_amd64   "/bin/sh -c /service…"   9 minutes ago   Up 9 minutes             e74dde5349b7eab24b4ca48e6933b45324011a3ef98f6683a183aa1d1195b3a9-ibm.helloworld
   ```
 
-This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product Knowledge Center.
+This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing.html).
