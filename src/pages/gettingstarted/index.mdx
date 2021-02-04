@@ -53,14 +53,14 @@ description: Getting Started with IBM Edge Application Manager Trial
 
   ![](images/2021-02-03-16-20-30.png)
 
-  To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty
+  To access the simulated edge device (the provided Ubuntu VM) you need a terminal with SSH client. On Mac or Linux workstation use a regular terminal, on Windows use Putty.
 
-  Open the terminal on your workstation. Connect to the VM using provided credentials (User and password to the hub are the same as to the virtual edge device)
+  Open the terminal on your workstation. Connect to the VM using provided credentials (Username and password are the same for the IEAM management hub and virtual edge device)
 
   For Mac and Linux
 
   ```sh
-  ssh <user>@<address> 
+  ssh <Username>@<Edge-Node-IP> 
   ```
 
   for example:
@@ -70,35 +70,6 @@ description: Getting Started with IBM Edge Application Manager Trial
   ```
 
   For Windows use putty.
-
-  Upon sucessful login you should see the similar output:
-
-  ```sh
-  $ ssh 270xx4w3qr@169.47.95.29
-  The authenticity of host '169.47.95.29 (169.47.95.29)' can't be established.
-  ECDSA key fingerprint is SHA256:Z+ILGgBEa0XJyvoVeNfdUWzyH1nocowc1q5NzNPK+kY.
-  Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-  Warning: Permanently added '169.47.95.29' (ECDSA) to the list of known hosts.
-  270xx4w3qr@169.47.95.29's password: 
-  Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-42-generic x86_64)
-
-  * Documentation:  https://help.ubuntu.com
-  * Management:     https://landscape.canonical.com
-  * Support:        https://ubuntu.com/advantage
-
-    Get cloud support with Ubuntu Advantage Cloud Guest:
-      http://www.ubuntu.com/business/services/cloud
-
-
-  The programs included with the Ubuntu system are free software;
-  the exact distribution terms for each program are described in the
-  individual files in /usr/share/doc/*/copyright.
-
-  Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-  applicable law.
-
-  270xx4w3qr@vm-270xx4w3qr:~$
-  ```
 
 ***
 
@@ -158,4 +129,4 @@ description: Getting Started with IBM Edge Application Manager Trial
   26aace4fe9ab   openhorizon/ibm.helloworld_amd64   "/bin/sh -c /service…"   9 minutes ago   Up 9 minutes             e74dde5349b7eab24b4ca48e6933b45324011a3ef98f6683a183aa1d1195b3a9-ibm.helloworld
   ```
 
-  This concludes the Getting started tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing.html).
+  This concludes the **Getting started** tutorial. Please continue with the additional provided tutorials or exlopre on your own, using the product [Knowledge Center](https://www.ibm.com/support/knowledgecenter/pl/SSFKVV_4.2/developing/developing.html).
